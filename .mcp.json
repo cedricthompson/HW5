@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "campus-customs": {
+      "type": "stdio",
+      "command": "sh",
+      "args": ["mcp_server/start.sh"],
+      "env": {}
+    }
+  }
+}

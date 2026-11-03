@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Campus Customs — Resolved Board</title>
+<style>
+  :root { --navy:#00356b; --blue:#286dc0; --yellow:#f5c518; --bg:#f2f4f7; --card:#fff; --line:#e1e5ec; --ink:#1b2431; --muted:#5f6878; --green:#1f7a4d; --amber:#9a5b00; }
+  * { box-sizing: border-box; }
+  body { margin:0; font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; color:var(--ink); background:var(--bg); }
+  header { background:linear-gradient(120deg,#0a2a52,var(--navy) 55%,#0d4c94); color:#fff; padding:26px 32px 30px; position:relative; }
+  header::after { content:""; position:absolute; left:0; right:0; bottom:0; height:5px; background:repeating-linear-gradient(-45deg,var(--yellow) 0 14px,#ffd84d 14px 28px); }
+  header h1 { margin:0; font-size:24px; } header h1 span { color:var(--yellow); }
+  header p { margin:6px 0 0; color:#c5d4ea; }
+  .stats { display:flex; gap:12px; flex-wrap:wrap; margin-top:16px; }
+  .stat { background:rgba(255,255,255,.1); border-radius:10px; padding:8px 14px; font-size:13px; color:#dbe6f6; }
+  .stat b { display:block; font-size:20px; color:#fff; }
+  .stat b.gold { color:var(--yellow); }
+  main { max-width:1180px; margin:0 auto; padding:24px 32px 48px; }
+  nav.jump { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px; }
+  nav.jump a { text-decoration:none; background:var(--card); border:1px solid var(--line); border-radius:999px; padding:6px 14px; color:var(--navy); font-weight:600; font-size:14px; }
+  section.ticket { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:22px 24px; margin-bottom:24px; box-shadow:0 1px 2px rgba(16,32,64,.06),0 4px 16px rgba(16,32,64,.06); }
+  .head { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap; }
+  .head h2 { margin:0; font-size:20px; color:var(--navy); }
+  .head .who { color:var(--muted); margin-top:2px; }
+  .badge { font-size:12px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; padding:5px 11px; border-radius:999px; }
+  .badge.resolved { background:var(--yellow); color:var(--navy); }
+  .badge.open { background:#fff4e0; color:var(--amber); }
+  .facts { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px 20px; margin:14px 0 6px; font-size:14px; }
+  .facts span { display:block; color:var(--muted); font-size:11.5px; text-transform:uppercase; letter-spacing:.04em; }
+  .chain { font-weight:600; color:var(--navy); }
+  figure { margin:16px 0 0; }
+  figure a { display:block; border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+  figure img { display:block; width:100%; height:auto; }
+  figcaption { font-size:13px; color:var(--muted); margin-top:8px; }
+  .shots { display:grid; grid-template-columns:repeat(auto-fit,minmax(420px,1fr)); gap:18px; }
+  .note { background:#fff4e0; color:#5c3b00; border-radius:8px; padding:10px 14px; font-size:14px; margin-top:12px; }
+  table { width:100%; border-collapse:collapse; font-size:14px; }
+  th, td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--line); }
+  th { color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.04em; }
+  td.num { text-align:right; font-variant-numeric:tabular-nums; }
+  tr.end td { font-weight:700; background:#eef3ff; }
+  footer { text-align:center; color:var(--muted); font-size:12px; padding-bottom:28px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Campus Customs <span>Resolved Board</span></h1>
+  <p>Screenshots of the React Ops Desk after the full run of all three tickets on Nov 2, 2026 (shop date 2026-08-31). Every agent used gpt-6-luna; every payment was approved by a person.</p>
+  <div class="stats">
+    <div class="stat">Tickets resolved<b>2 of 3</b></div>
+    <div class="stat">Still in progress<b>#103</b></div>
+    <div class="stat">Checking start<b>$3,400.00</b></div>
+    <div class="stat">Paid out (approved by Cedric)<b>−$3,240.00</b></div>
+    <div class="stat">Checking end = <code style="color:#fff">cash_accounts</code><b class="gold">$160.00</b></div>
+  </div>
+</header>
+
+<main>
+  <nav class="jump"><a href="#t101">#101 Bulldog tee</a><a href="#t102">#102 Rent due</a><a href="#t103">#103 Bulk hoodies</a><a href="#cash">Cash</a></nav>
+
+  <section class="ticket" id="t101">
+    <div class="head">
+      <div><h2>#101 · Bulldog tee</h2><div class="who">Customer order · Tauhid Zaman · 1 × CC-TEE-WHITE size S</div></div>
+      <span class="badge resolved">✓ Resolved</span>
+    </div>
+    <div class="facts">
+      <div><span>Boss called first</span>Accounting</div>
+      <div><span>Chain</span><span class="chain">Boss → Accounting → Inventory → Customer Service</span></div>
+      <div><span>Human approval</span>Request #1, invoice 501, $840.00 · Cedric</div>
+      <div><span>Cash</span>$3,400.00 → $2,560.00</div>
+    </div>
+    <p>Overdue invoice 501 was holding the size S reprint. Accounting filed the payment, Cedric approved it, Inventory confirmed the earliest arrival (2026-09-05, not promised), and Customer Service drafted Tauhid's update (draft #4 replaced draft #1 after the payment). Boss set <b>resolved</b> once nothing was pending.</p>
+    <div class="shots">
+      <figure><a href="screenshots/ticket-101-1-work.jpg" target="_blank"><img src="screenshots/ticket-101-1-work.jpg" alt="Ticket 101 work run on the React board"></a>
+        <figcaption><b>1 · The work run</b> (20:07). The chain Boss → Accounting → Inventory → Customer Service, the bills-due alert, Boss's call at the time (waiting on approval), and each agent's summary with request #1 and draft #1.</figcaption></figure>
+      <figure><a href="screenshots/ticket-101-2-resolved.jpg" target="_blank"><img src="screenshots/ticket-101-2-resolved.jpg" alt="Ticket 101 resolved on the React board"></a>
+        <figcaption><b>2 · Resolved</b> (20:17, after Cedric approved $840). Boss confirmed invoice 501 was paid; Inventory gave the earliest arrival; Customer Service saved corrected draft #4. Status: <b>Resolved</b>. Balance $160.00 shown is after both payments.</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="ticket" id="t102">
+    <div class="head">
+      <div><h2>#102 · Rent due</h2><div class="who">Rent notice · Elm City Properties · lease 1, Chapel Street shop</div></div>
+      <span class="badge resolved">✓ Resolved</span>
+    </div>
+    <div class="facts">
+      <div><span>Boss called first</span>Facilities</div>
+      <div><span>Chain</span><span class="chain">Boss → Facilities → Accounting → Facilities</span></div>
+      <div><span>Human approval</span>Request #2, rent, $2,400.00 · Cedric</div>
+      <div><span>Cash</span>$2,560.00 → $160.00</div>
+    </div>
+    <p>Facilities checked the notice against the lease ($2,400 due 2026-09-02), Accounting filed the rent, Facilities drafted the landlord reply, and Cedric approved the payment. The lease moved to next due 2026-10-02. The close-out was Boss alone, with no handoffs and 24,390 tokens.</p>
+    <div class="shots">
+      <figure><a href="screenshots/ticket-102-1-work.jpg" target="_blank"><img src="screenshots/ticket-102-1-work.jpg" alt="Ticket 102 work run on the React board"></a>
+        <figcaption><b>1 · The work run</b> (20:08). Facilities and Accounting did the work; Inventory and Customer Service stayed idle (not needed). Boss's next step for the person: approve request #2 before 2026-09-02.</figcaption></figure>
+      <figure><a href="screenshots/ticket-102-2-resolved.jpg" target="_blank"><img src="screenshots/ticket-102-2-resolved.jpg" alt="Ticket 102 resolved on the React board"></a>
+        <figcaption><b>2 · Resolved</b> (20:17). Boss re-checked with <code>get_ticket</code>, <code>get_lease</code>, <code>get_cash_balance</code>, <code>get_bills_due</code> and set <b>Resolved</b>: rent paid, landlord draft saved, nothing sent.</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="ticket" id="t103">
+    <div class="head">
+      <div><h2>#103 · Bulk hoodie discount</h2><div class="who">Price override · Yale AI Club · 20 × CC-HOOD-NAVY size M</div></div>
+      <span class="badge open">In progress</span>
+    </div>
+    <div class="facts">
+      <div><span>Boss called first</span>Inventory</div>
+      <div><span>Chain</span><span class="chain">Boss → Inventory → Accounting → Customer Service</span></div>
+      <div><span>Human approval</span>None needed. No payment was requested.</div>
+      <div><span>Cash</span>$160.00 → $160.00 (no change)</div>
+    </div>
+    <p>Boss set <b>$50/hoodie</b> (13.8% off $58, $28 margin over the $22 cost), but only 8 of 20 are in stock. The 12-hoodie purchase order ($264) was <b>refused by the cash guardrail</b>, since only $160 was left. Customer Service's draft #3 offers what's possible. Boss deferred the full-quantity offer, so the ticket stays <b>in progress</b>. That's the final state you chose to leave it in.</p>
+    <div class="shots">
+      <figure><a href="screenshots/ticket-103-in-progress.jpg" target="_blank"><img src="screenshots/ticket-103-in-progress.jpg" alt="Ticket 103 on the React board, still in progress"></a>
+        <figcaption><b>Last run</b> (20:18). Inventory, Accounting and Customer Service re-checked the facts; Boss kept the ticket <b>In progress</b> because the other 12 can't be bought with $160.</figcaption></figure>
+    </div>
+    <div class="note">This page is named "Resolved Board", but #103 is not resolved. It's shown so the board is complete and honest.</div>
+  </section>
+
+  <section class="ticket" id="cash">
+    <div class="head"><div><h2>Cash</h2><div class="who">checking · data/campus_customs_new.db</div></div><span class="badge resolved">Matches cash_accounts</span></div>
+    <table>
+      <tr><th>Step</th><th>Ticket</th><th>Why</th><th>Approved by</th><th class="num">Change</th><th class="num">Balance</th></tr>
+      <tr><td>Start (reset)</td><td>—</td><td>Original database</td><td>—</td><td class="num">—</td><td class="num">$3,400.00</td></tr>
+      <tr><td>Payment #1</td><td>101</td><td>Invoice 501 to Bulldog Print Co (overdue, blocked the tee reprint)</td><td>Cedric</td><td class="num">−$840.00</td><td class="num">$2,560.00</td></tr>
+      <tr><td>Payment #2</td><td>102</td><td>September rent, lease 1</td><td>Cedric</td><td class="num">−$2,400.00</td><td class="num">$160.00</td></tr>
+      <tr><td>—</td><td>103</td><td>Purchase order for 12 hoodies ($264) refused: more than cash on hand</td><td>—</td><td class="num">$0.00</td><td class="num">$160.00</td></tr>
+      <tr class="end"><td colspan="4">End: $3,400.00 − $840.00 − $2,400.00</td><td class="num">−$3,240.00</td><td class="num">$160.00</td></tr>
+    </table>
+  </section>
+</main>
+<footer>Campus Customs Multi-Agent Operations · HW 5 · Screenshots taken from the React dashboard (frontend/) against the real backend and database after the run.</footer>
+</body>
+</html>

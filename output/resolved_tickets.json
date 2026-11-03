@@ -1,0 +1,355 @@
+{
+  "assignment": "MGT 409 HW 5: Campus Customs Multi-Agent Operations, Problem 9 (resolve the tickets)",
+  "run_date": "2026-11-02",
+  "shop_date": "2026-08-31",
+  "model": "gpt-6-luna via Portkey (every agent)",
+  "database": "data/campus_customs_new.db (reset to the original before the run)",
+  "audit_trail": "output/audit_trail.json (append-only; run IDs below)",
+  "cash": {
+    "account": "checking",
+    "starting_balance": 3400.0,
+    "ledger": [
+      {
+        "step": "start",
+        "balance": 3400.0,
+        "note": "database reset to the original values"
+      },
+      {
+        "step": "payment #1",
+        "ticket_id": 101,
+        "kind": "invoice",
+        "ref_id": 501,
+        "change": -840.0,
+        "approved_by": "Cedric",
+        "balance_after": 2560.0
+      },
+      {
+        "step": "payment #2",
+        "ticket_id": 102,
+        "kind": "rent",
+        "ref_id": 1,
+        "change": -2400.0,
+        "approved_by": "Cedric",
+        "balance_after": 160.0
+      }
+    ],
+    "total_paid_out": 3240.0,
+    "ending_balance": 160.0,
+    "matches_cash_accounts": true,
+    "check": "3400.00 - 840.00 - 2400.00 = 160.00 = cash_accounts.balance"
+  },
+  "tickets": [
+    {
+      "id": 101,
+      "type": "customer_order",
+      "requester": "Tauhid Zaman",
+      "subject": "Bulldog tee",
+      "final_status": "resolved",
+      "outcome": "Size S tee was out of stock because overdue invoice 501 ($840) was blocking Bulldog Print Co's reprint. Accounting filed the payment, Cedric approved it, and the vendor can now ship (earliest arrival 2026-09-05, not promised). Tauhid has an updated draft reply.",
+      "boss_first_called": "accounting",
+      "handoff_chain": [
+        "boss",
+        "accounting",
+        "inventory",
+        "customer_service"
+      ],
+      "agents": {
+        "boss": "Found the root cause (0 on hand, invoice 501 overdue and holding the reprint), sent it to Accounting first, set waiting_on_approval, then resolved it after the payment.",
+        "accounting": "Checked cash, bills due and existing requests, and filed request #1 for invoice 501 ($840.00, amount read from the invoice). Handed off to Inventory with the request ID.",
+        "inventory": "Confirmed 0 size S on hand (Aisle B), vendor 1's 5-day lead time, and that invoice 501 covers the restock. After payment: vendor will ship, earliest arrival 2026-09-05. Handed off to Customer Service.",
+        "customer_service": "Saved draft #1 to Tauhid (restock timing conditional), then draft #4 after payment with the paid status and earliest date. Nothing sent.",
+        "facilities": "Not called."
+      },
+      "tools_used": {
+        "boss": [
+          "get_ticket",
+          "check_stock",
+          "get_invoice",
+          "get_cash_balance",
+          "update_ticket_status"
+        ],
+        "accounting": [
+          "get_ticket",
+          "get_cash_balance",
+          "list_approval_requests",
+          "get_bills_due",
+          "get_invoice",
+          "check_stock",
+          "request_invoice_payment"
+        ],
+        "inventory": [
+          "get_ticket",
+          "check_stock",
+          "get_invoice",
+          "list_inventory",
+          "list_vendors"
+        ],
+        "customer_service": [
+          "get_ticket",
+          "list_approval_requests",
+          "list_drafts",
+          "check_stock",
+          "save_draft"
+        ]
+      },
+      "human_approvals": [
+        {
+          "request_id": 1,
+          "kind": "invoice",
+          "ref_id": 501,
+          "amount": 840.0,
+          "prepared_by": "Accounting",
+          "status": "approved_paid",
+          "approved_by": "Cedric",
+          "approved_at": "2026-11-02T20:07:58-05:00",
+          "payment_id": 1,
+          "paid_at_shop_date": "2026-08-31"
+        }
+      ],
+      "cash_change": -840.0,
+      "drafts": [
+        {
+          "draft_id": 1,
+          "to": "Tauhid Zaman",
+          "subject": "Update on your size S Bulldog tee",
+          "by": "Customer Service",
+          "status": "draft"
+        },
+        {
+          "draft_id": 4,
+          "to": "Tauhid Zaman",
+          "subject": "Update on your size S Bulldog tee",
+          "by": "Customer Service",
+          "status": "draft"
+        }
+      ],
+      "status_history": [
+        {
+          "from": "open",
+          "to": "waiting_on_approval",
+          "by": "Boss",
+          "at": "2026-11-02T20:07:49-05:00"
+        },
+        {
+          "from": "waiting_on_approval",
+          "to": "resolved",
+          "by": "Boss",
+          "at": "2026-11-02T20:17:17-05:00"
+        }
+      ],
+      "boss_final_note": "Invoice 501 has been paid and the customer has an updated draft reply; no payment request remains pending. The size S tee is out of stock, and the linked rush reprint's five-day vendor lead time gives an earliest possible arrival of 2026-09-05, not a guarantee.",
+      "runs": [
+        {
+          "run_id": "20261102-200710-960f7e",
+          "what": "bills-due alert + ticket work",
+          "tokens": 68256
+        },
+        {
+          "run_id": "20261102-201649-137a68",
+          "what": "close-out after approval",
+          "tokens": 52525
+        }
+      ],
+      "notes": [
+        "The bills-due alert's handoff left out the ticket ID, so Accounting's first request attempt was refused; the request was filed in the ticket run instead.",
+        "Runs 20261102-195918-43de13 and 20261102-200102-c86c03 happened before the database reset; their effects were cleared by the reset."
+      ]
+    },
+    {
+      "id": 102,
+      "type": "rent_notice",
+      "requester": "Elm City Properties",
+      "subject": "Rent due",
+      "final_status": "resolved",
+      "outcome": "The rent notice matched lease 1 ($2,400 due 2026-09-02). Accounting filed the rent request, Cedric approved it, and the lease moved to next due 2026-10-02. The landlord has a draft reply.",
+      "boss_first_called": "facilities",
+      "handoff_chain": [
+        "boss",
+        "facilities",
+        "accounting",
+        "facilities"
+      ],
+      "agents": {
+        "boss": "Checked the lease, sent the notice to Facilities, set waiting_on_approval, then confirmed the payment on its own and set resolved.",
+        "facilities": "Checked the notice against the lease (matched, not overdue), asked Accounting to file the rent, and saved draft #2 to the landlord.",
+        "accounting": "Checked bills due and cash, and filed request #2 for rent ($2,400.00, amount read from the lease).",
+        "inventory": "Not called.",
+        "customer_service": "Not called."
+      },
+      "tools_used": {
+        "boss": [
+          "get_open_tickets",
+          "get_ticket",
+          "get_lease",
+          "get_cash_balance",
+          "get_bills_due",
+          "update_ticket_status"
+        ],
+        "facilities": [
+          "get_ticket",
+          "get_lease",
+          "get_cash_balance",
+          "save_draft"
+        ],
+        "accounting": [
+          "get_ticket",
+          "get_cash_balance",
+          "list_approval_requests",
+          "get_bills_due",
+          "get_lease",
+          "request_rent_payment"
+        ]
+      },
+      "human_approvals": [
+        {
+          "request_id": 2,
+          "kind": "rent",
+          "ref_id": 1,
+          "amount": 2400.0,
+          "prepared_by": "Accounting",
+          "status": "approved_paid",
+          "approved_by": "Cedric",
+          "approved_at": "2026-11-02T20:08:38-05:00",
+          "payment_id": 2,
+          "paid_at_shop_date": "2026-08-31"
+        }
+      ],
+      "cash_change": -2400.0,
+      "drafts": [
+        {
+          "draft_id": 2,
+          "to": "Elm City Properties",
+          "subject": "Re: Rent due",
+          "by": "Facilities",
+          "status": "draft"
+        }
+      ],
+      "status_history": [
+        {
+          "from": "open",
+          "to": "waiting_on_approval",
+          "by": "Boss",
+          "at": "2026-11-02T20:08:29-05:00"
+        },
+        {
+          "from": "waiting_on_approval",
+          "to": "resolved",
+          "by": "Boss",
+          "at": "2026-11-02T20:17:55-05:00"
+        }
+      ],
+      "boss_final_note": "Rent request 2 for $2,400 is approved and paid; lease records payment on 2026-08-31 and next rent due 2026-10-02. Landlord reply draft 2 is saved on the board and was not sent.",
+      "runs": [
+        {
+          "run_id": "20261102-200801-f98aec",
+          "what": "ticket work",
+          "tokens": 59501
+        },
+        {
+          "run_id": "20261102-201746-2e38da",
+          "what": "close-out after approval (Boss only)",
+          "tokens": 24390
+        }
+      ]
+    },
+    {
+      "id": 103,
+      "type": "price_override",
+      "requester": "Yale AI Club",
+      "subject": "Bulk hoodie discount",
+      "final_status": "in_progress",
+      "outcome": "Not resolved (left in progress by the user's decision). Boss set $50/hoodie (13.8% off $58, $28 margin, above the $22 cost), but only 8 of 20 are in stock, and the 12-hoodie purchase order ($264) was refused because only $160 is left. The full-quantity offer is deferred; the club has a draft reply.",
+      "boss_first_called": "inventory",
+      "handoff_chain": [
+        "boss",
+        "inventory",
+        "accounting",
+        "boss",
+        "customer_service"
+      ],
+      "agents": {
+        "boss": "Sent it to Inventory first, chose the $50 price after Accounting's margin check, and kept the ticket in_progress because the other 12 can't be bought with the cash left.",
+        "inventory": "Found 8 size M on hand (short 12), vendor 1 (5-day lead, will ship once 501 was paid), and the restock cost of 12 x $22 = $264. Handed off to Accounting.",
+        "accounting": "Checked margins at $50 ($28/unit, 56%) and cash. Tried a 12-hoodie purchase order, which the tool refused ($264 > $160 cash). Filed nothing.",
+        "customer_service": "Saved draft #3 to Yale AI Club with the $50 price, 8 in stock, and the other 12 depending on a purchase order. Checked it again in the last run and left it unchanged. Nothing sent.",
+        "facilities": "Not called."
+      },
+      "tools_used": {
+        "boss": [
+          "get_open_tickets",
+          "get_ticket",
+          "check_stock",
+          "check_discount",
+          "get_cash_balance",
+          "list_approval_requests",
+          "list_drafts",
+          "update_ticket_status"
+        ],
+        "inventory": [
+          "get_ticket",
+          "check_stock",
+          "list_vendors"
+        ],
+        "accounting": [
+          "get_ticket",
+          "get_cash_balance",
+          "list_approval_requests",
+          "get_bills_due",
+          "check_stock",
+          "check_discount",
+          "list_vendors",
+          "request_purchase_order (refused)"
+        ],
+        "customer_service": [
+          "get_ticket",
+          "check_stock",
+          "list_approval_requests",
+          "save_draft"
+        ]
+      },
+      "human_approvals": [],
+      "cash_change": 0,
+      "drafts": [
+        {
+          "draft_id": 3,
+          "to": "Yale AI Club",
+          "subject": "Update on your 20-hoodie request",
+          "by": "Customer Service",
+          "status": "draft"
+        }
+      ],
+      "status_history": [
+        {
+          "from": "open",
+          "to": "in_progress",
+          "by": "Boss",
+          "at": "2026-11-02T20:11:34-05:00"
+        },
+        {
+          "from": "in_progress",
+          "to": "in_progress",
+          "by": "Boss",
+          "at": "2026-11-02T20:18:31-05:00"
+        }
+      ],
+      "boss_final_note": "The $50 price has a positive $28 per-unit margin ($560 total margin), but only 8 of 20 hoodies are on hand. The 12-unit restock costs $264 versus $160 cash, so no PO or approval request was filed; defer the full-quantity offer until funds are available.",
+      "runs": [
+        {
+          "run_id": "20261102-200845-0a5020",
+          "what": "ticket work, stopped by the 120,000-token limit",
+          "tokens": 123235
+        },
+        {
+          "run_id": "20261102-201055-727cb5",
+          "what": "ticket work",
+          "tokens": 72165
+        },
+        {
+          "run_id": "20261102-201801-e2fa3a",
+          "what": "close-out attempt",
+          "tokens": 71916
+        }
+      ]
+    }
+  ]
+}
