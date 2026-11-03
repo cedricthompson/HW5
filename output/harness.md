@@ -336,37 +336,57 @@ If a limit is hit, the run stops with an `error` event in the audit trail instea
 
 ## Results of the full run (Problem 9)
 
-On Nov 2, 2026, the database was reset to the original values, and then all three tickets were run from the dashboard with real `gpt-6-luna` calls. Every step is in `output/audit_trail.json`, which now has 962 events. That includes two earlier ticket 101 runs from before the reset, whose effects the reset cleared.
+Problem 9 was run three times. Each time the database was first reset to the original values, and real `gpt-6-luna` calls ran from the dashboard and API. The **final run (Nov 3, 10:04–10:13) is the graded result**: all three tickets resolved, with 103 filled entirely from stock. Every step of all three runs is in `output/audit_trail.json` (1,969 events; 609 from the final run).
 
-| Ticket | Boss called first | Handoff chain | Person approved | Cash | Final status |
-|---|---|---|---|---|---|
-| #101 Bulldog tee | Accounting | Boss → Accounting → Inventory → Customer Service | Request #1, invoice 501, $840.00 (Cedric) | −$840.00 | **resolved** |
-| #102 Rent due | Facilities | Boss → Facilities → Accounting → Facilities | Request #2, rent, $2,400.00 (Cedric) | −$2,400.00 | **resolved** |
-| #103 Bulk hoodies | Inventory | Boss → Inventory → Accounting → Boss → Customer Service | None (the purchase order was refused for cash) | $0.00 | **in_progress** (left open by the user's decision) |
+### Final run (Nov 3, 2026, 10:04): 3 of 3 resolved
 
-**Cash:** $3,400.00 (start, after reset) − $840.00 − $2,400.00 = **$160.00**. That equals `cash_accounts.balance`. The `payments` table totals $3,240.00, and no requests are pending.
+Run order **103 → 101 → 102**, with Boss's new "fill from stock" rule in effect.
 
-**Tokens:** 7 runs after the reset used 471,988 tokens in total. The cheapest was ticket 102's close-out (24,390, Boss alone). The most expensive was ticket 103's first run, which the 120K limit stopped.
+| Order | Ticket | Boss called first | Handoff chain | Person approved | Cash | Final status | Tokens |
+|---|---|---|---|---|---|---|---|
+| 1 | #103 Bulk hoodies | Inventory (after passing the bills-due alert to Accounting) | Run 1: Boss → Inventory → Accounting; Boss → Accounting → Customer Service; Boss → Customer Service (token limit). Run 2: Boss → Inventory → Accounting; Inventory → Customer Service; Boss → Accounting; Boss → Customer Service | Request #1, rent, $2,400.00 and request #2, invoice 501, $840.00 (both filed under 103 by Accounting's bill priority; Cedric) | −$3,240.00 | **resolved**: 20 hoodies from stock (8 M + 12 L) at $40 (draft #2) | 277,708 (2 runs + alert) |
+| 2 | #101 Bulldog tee | Inventory (invoice 501 was already paid) | Run 1: Boss → Inventory → Customer Service (in_progress). Run 2: Boss → Inventory → Accounting. Close-out: Boss → Inventory | Request #3, purchase order, 1 tee, $8.00 (Cedric) | −$8.00 | **resolved** | 143,549 (3 runs) |
+| 3 | #102 Rent due | Facilities | Boss → Facilities | None needed: rent was already paid as request #1 | $0.00 | **resolved** | 37,321 |
 
-**Guardrails seen in the real run:**
-- **Token limit:** stopped ticket 103's first run at 120,000.
-- **Cycle guardrail:** refused seven attempts to hand work back to an agent already waiting in the chain, for example Customer Service → Inventory on ticket 101.
-- **Delegation cap:** turned away Inventory's attempt to ask Accounting a second time on ticket 103.
-- **Cash guardrail:** `request_purchase_order` refused the 12-hoodie order: "$264.0 is more than the cash on hand".
-- **People only:** both payments were approved by a person (`approved_by = Cedric`). No agent can call `approve_and_pay`.
+**Cash:** $3,400.00 (start, after reset) − $2,400.00 − $840.00 − $8.00 = **$152.00**. That equals `cash_accounts.balance`. The `payments` table has 3 rows totaling $3,248.00, all `approved_by = Cedric`, and no requests are pending.
 
-**What didn't go as expected (and fixes):**
-- **The bills-due alert's handoff left out the ticket ID**, so Accounting's first request attempt was refused. The request was filed in the ticket run instead. Fix to consider: have the alert pass the ticket linked to each bill.
-- **Ticket 101's close-out sent the ticket down the chain again** instead of only confirming, which cost 52,525 tokens and produced a second customer draft. Ticket 102's close-out followed the re-check rule exactly.
-- **Boss kept ticket 103 open:** it treated "can't fund the other 12 hoodies" as unfinished work. Per the user's decision, the ticket was left `in_progress` rather than re-run.
-- **Boss's status rule was clarified mid-run:** `resolved` = the shop's part is done (payments paid, replies drafted, decision made).
+**Approvals per ticket:**
+
+| Ticket | Filed under it | Paid for it |
+|---|---|---|
+| 101 | 1 | 2 (invoice 501 + the $8 tee) |
+| 102 | 0 | 1 (rent) |
+| 103 | 2 | 0 |
+
+**Tokens:** 6 runs used 458,578 tokens in total. Both 103 runs hit the 120,000 limit (123,794 and 127,285). The cheapest ticket run was the 101 close-out (35,601), then 102 (37,321).
+
+**Guardrails seen in the final run:**
+- **Token limit:** stopped 103's first run before Boss set a price or status. It stopped the second run after Boss had saved `resolved`, so that run has no final Boss report.
+- **Cycle guardrail:** refused five hand-backs to an agent already waiting in the chain: Accounting → Boss and Customer Service → Boss on both 103 runs, and Accounting → Inventory on 101.
+- **Discount floor:** `check_discount` showed $22 at cost (0% margin), and Boss didn't use it. $40, $50, $57 and $58 were all checked.
+- **Duplicate check:** no bill was filed twice. 101 and 102 found their bills already paid.
+- **People only:** all three payments were approved by a person. No agent can call `approve_and_pay`.
+
+**What worked, and what didn't go as expected:**
+- **The from-stock rule worked.** Inventory used `list_inventory`, found S 4, M 8, L 14, XL 6, and proposed 8 M + 12 L. No purchase order was needed for 103.
+- **Boss chose a deep discount.** At $40 (31% off) the 20 hoodies earn $360 of margin. At $50 the same 20 would have earned $560. Boss checked several prices but nothing in its rules says to aim for profit.
+- **103 is too expensive for one run.** Both runs went past 120,000 tokens because Accounting and Customer Service were each called several times and kept re-checking the same facts.
+- **101 needed an extra run.** Run 1 set `in_progress` without asking Accounting about a restock; run 2 filed the $8 order. That order may double up on the reprint already paid for in invoice 501.
+- **The bills-due alert's handoff still left out the ticket ID**, so its own request (ticket 0) was refused. Same fix as before: have the alert pass the ticket linked to each bill.
+
+### Earlier runs
+
+| Run | Order | Result | Ending cash | Tokens |
+|---|---|---|---|---|
+| Nov 2 | 101 → 102 → 103 | 101 and 102 resolved; 103 left `in_progress` (12 hoodies at $264, only $160 left). The 120,000 limit stopped 103's first try. 101's close-out re-ran the whole chain. Boss's resolved rule was clarified mid-run. | $160.00 | 471,988 (7 runs) |
+| Nov 3, 09:26 | 103 → 101 → 102 | All resolved, but 103 offered only the 8 M on hand at $50 ($224 margin), because the from-stock rule wasn't in Boss's prompt yet. 101 added an $8 tee order. | $152.00 | 303,881 (4 runs) |
 
 **Output files:**
 
 | File | What it holds |
 |---|---|
-| `output/desk_tickets.html` | Expected (written before the run) and Actual (from the run) for each ticket, plus the Cash tab with the itemized ledger |
-| `output/resolved_tickets.json` | For each ticket: ID, final status, outcome, each agent's contribution, tools, human approvals, cash change, drafts, status history, run IDs. The cash ledger is checked against `cash_accounts`. |
+| `output/desk_tickets.html` | Expected (written before the run) and Actual (from the final run) for each ticket, plus the Cash tab with the itemized ledger |
+| `output/resolved_tickets.json` | For each ticket: ID, final status, outcome, each agent's contribution, tools, human approvals, cash change, drafts, status history, run IDs; plus the earlier runs. The cash ledger is checked against `cash_accounts`. |
 | `output/resolved_board.html` | Screenshots of the React board for each ticket (`output/screenshots/`) |
 | `output/audit_trail.json` | Every step of every real run, append-only |
 | `output/design.md` | The dashboard design write-up |

@@ -22,7 +22,7 @@ React board (frontend/, :5173)  →  FastAPI backend (backend/main.py, :8000)  �
 | Path | What it is |
 |---|---|
 | `data/campus_customs.db` | The **original** shop database. Never changed; use it to reset. |
-| `data/campus_customs_new.db` | The **working copy** the app reads and writes. As committed, it holds the state after the graded run (2 tickets resolved, cash $160.00). |
+| `data/campus_customs_new.db` | The **working copy** the app reads and writes. As committed, it holds the state after the final graded run (3 tickets resolved, cash $152.00). |
 | `mcp_server/` | FastMCP server with 24 tools (`server.py`), its README, and `start.sh` (used by `.mcp.json`) |
 | `backend/` | FastAPI routes (`main.py`), data types (`models.py`), the five agents (`boss.py`, `inventory.py`, `accounting.py`, `facilities.py`, `customer_service.py`), the agent loop and handoffs (`team.py`), the audit writer (`audit.py`), a command-line runner (`run.py`), and the agent prompts in `prompts/` |
 | `frontend/` | The React + Vite + TypeScript Ops Desk |
@@ -97,9 +97,9 @@ Open **http://localhost:5173**. Pick a ticket and click **Run team** to watch th
 ## 5. Full three-ticket run
 
 1. **Reset the database first**, with **Reset data** on the board or step 1 above, so the run starts at $3,400.00.
-2. Click **Run team** on ticket 101, then 102, then 103.
-3. Approve the payment requests the agents prepare: invoice 501 ($840) and rent ($2,400).
-4. Run 101 and 102 again so Boss sees the payments landed and marks them resolved.
+2. Click **Run team** on ticket **103 first**, then 101, then 102. With 103 first, Accounting ranks the bills while there's still cash.
+3. Approve the requests the agents prepare as they appear: invoice 501 ($840), rent ($2,400), and any purchase order.
+4. Run a ticket again if it's waiting on an approval you've since given, so Boss sees the payment landed and marks it resolved.
 
 Every step is appended to `output/audit_trail.json`, which is never wiped.
 
@@ -113,12 +113,14 @@ From the command line, without the board:
 
 Use **Reset data** on the board, or `curl -X POST localhost:8000/reset`, or stop the backend and run the `cp` from step 1.
 
-## Results of the graded run (Nov 2, 2026)
+## Results of the graded run (Nov 3, 2026)
+
+Run order 103 → 101 → 102, with Boss's "fill from stock" rule. All three tickets resolved.
 
 | Ticket | Final status | Cash |
 |---|---|---|
-| #101 Bulldog tee | resolved | −$840.00 (invoice 501, approved by Cedric) |
-| #102 Rent due | resolved | −$2,400.00 (rent, approved by Cedric) |
-| #103 Bulk hoodies | in progress | $0.00 (purchase order refused: $264 needed, $160 on hand) |
+| #103 Bulk hoodies | resolved: all 20 offered from stock (8 M + 12 L) at $40 | −$2,400.00 and −$840.00 (rent and invoice 501, filed during 103 by bill priority, approved by Cedric) |
+| #101 Bulldog tee | resolved | −$8.00 (purchase order for 1 tee, approved by Cedric) |
+| #102 Rent due | resolved | $0.00 (rent was already paid) |
 
-Checking: $3,400.00 → **$160.00**, which matches `cash_accounts`. Details are in `output/desk_tickets.html`, `output/resolved_tickets.json` and `output/harness.md`.
+Checking: $3,400.00 → **$152.00**, which matches `cash_accounts`. Problem 9 was run three times. `output/harness.md` compares them: Nov 2 resolved 2 of 3 and ended at $160.00; an earlier Nov 3 run resolved all 3 but offered only 8 hoodies. Details are in `output/desk_tickets.html`, `output/resolved_tickets.json` and `output/resolved_board.html`.

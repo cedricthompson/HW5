@@ -46,18 +46,38 @@
 <body>
 <header>
   <h1>Campus Customs <span>Resolved Board</span></h1>
-  <p>Screenshots of the React Ops Desk after the full run of all three tickets on Nov 2, 2026 (shop date 2026-08-31). Every agent used gpt-6-luna; every payment was approved by a person.</p>
+  <p>Screenshots of the React Ops Desk from the final Problem 9 run on Nov 3, 2026, 10:04–10:13 (shop date 2026-08-31). Every agent used gpt-6-luna, and a person approved every payment.</p>
   <div class="stats">
-    <div class="stat">Tickets resolved<b>2 of 3</b></div>
-    <div class="stat">Still in progress<b>#103</b></div>
+    <div class="stat">Tickets resolved<b class="gold">3 of 3</b></div>
+    <div class="stat">Run order<b>103 → 101 → 102</b></div>
     <div class="stat">Checking start<b>$3,400.00</b></div>
-    <div class="stat">Paid out (approved by Cedric)<b>−$3,240.00</b></div>
-    <div class="stat">Checking end = <code style="color:#fff">cash_accounts</code><b class="gold">$160.00</b></div>
+    <div class="stat">Paid out (approved by Cedric)<b>−$3,248.00</b></div>
+    <div class="stat">Checking end = <code style="color:#fff">cash_accounts</code><b class="gold">$152.00</b></div>
   </div>
 </header>
 
 <main>
-  <nav class="jump"><a href="#t101">#101 Bulldog tee</a><a href="#t102">#102 Rent due</a><a href="#t103">#103 Bulk hoodies</a><a href="#cash">Cash</a></nav>
+  <nav class="jump"><a href="#t103">#103 Bulk hoodies</a><a href="#t101">#101 Bulldog tee</a><a href="#t102">#102 Rent due</a><a href="#cash">Cash</a></nav>
+
+  <section class="ticket" id="t103">
+    <div class="head">
+      <div><h2>#103 · Bulk hoodie discount</h2><div class="who">Price override · Yale AI Club · 20 × CC-HOOD-NAVY · run first</div></div>
+      <span class="badge resolved">✓ Resolved</span>
+    </div>
+    <div class="facts">
+      <div><span>Boss called first</span>Inventory (after sending the bills-due alert to Accounting)</div>
+      <div><span>Chain (run 2)</span><span class="chain">Boss → Inventory → Accounting · Inventory → Customer Service · Boss → Accounting → Boss → Customer Service</span></div>
+      <div><span>Human approval</span>Request #1, rent, $2,400.00 · Request #2, invoice 501, $840.00 · both Cedric</div>
+      <div><span>Cash</span>$3,400.00 → $160.00</div>
+    </div>
+    <p>Inventory looked across sizes (S 4, M 8, L 14, XL 6) and found that <b>8 M + 12 L</b> fills all 20 from stock, so no purchase order was needed. Accounting ranked the bills and filed rent and invoice 501 under this ticket. Boss set <b>$40 per hoodie</b> (31% off $58 list; $18 margin per unit, $360 total). Customer Service saved draft #2, and Boss set <b>resolved</b>. Both 103 runs hit the 120,000-token limit. The first stopped before a price was set. The second stopped only after the status was saved.</p>
+    <div class="shots">
+      <figure><a href="screenshots/ticket-103-1-token-limit.jpg" target="_blank"><img src="screenshots/ticket-103-1-token-limit.jpg" alt="Ticket 103 first run, stopped by the token limit"></a>
+        <figcaption><b>1 · First run</b> (10:04–10:06, 150,423 tokens with the alert). Bills filed and draft #1 (8 M + 12 L, no price yet) saved. Then Boss and Customer Service show <b>ERROR</b>: the 120,000-token limit.</figcaption></figure>
+      <figure><a href="screenshots/ticket-103-2-resolved.jpg" target="_blank"><img src="screenshots/ticket-103-2-resolved.jpg" alt="Ticket 103 resolved on the React board"></a>
+        <figcaption><b>2 · Resolved</b> (10:08–10:09, after Cedric approved #1 and #2). Accounting checked $40, Customer Service saved draft #2, and Boss set <b>Resolved</b>. The limit then stopped Boss's final report.</figcaption></figure>
+    </div>
+  </section>
 
   <section class="ticket" id="t101">
     <div class="head">
@@ -65,17 +85,17 @@
       <span class="badge resolved">✓ Resolved</span>
     </div>
     <div class="facts">
-      <div><span>Boss called first</span>Accounting</div>
-      <div><span>Chain</span><span class="chain">Boss → Accounting → Inventory → Customer Service</span></div>
-      <div><span>Human approval</span>Request #1, invoice 501, $840.00 · Cedric</div>
-      <div><span>Cash</span>$3,400.00 → $2,560.00</div>
+      <div><span>Boss called first</span>Inventory (invoice 501 was already paid)</div>
+      <div><span>Chain</span><span class="chain">Run 1: Boss → Inventory → Customer Service · Run 2: Boss → Inventory → Accounting · Run 3: Boss → Inventory</span></div>
+      <div><span>Human approval</span>Request #3, purchase order, 1 tee, $8.00 · Cedric</div>
+      <div><span>Cash</span>$160.00 → $152.00</div>
     </div>
-    <p>Overdue invoice 501 was holding the size S reprint. Accounting filed the payment, Cedric approved it, Inventory confirmed the earliest arrival (2026-09-05, not promised), and Customer Service drafted Tauhid's update (draft #4 replaced draft #1 after the payment). Boss set <b>resolved</b> once nothing was pending.</p>
+    <p>Run 1 saved Tauhid's draft (#3) but stopped at <b>in progress</b>, because nobody asked Accounting about a restock. In run 2, Inventory brought in Accounting, which filed the 1-tee order ($8), and Boss set <b>waiting on approval</b>. After Cedric approved, Cedric ran the close-out from the dashboard and Boss set <b>resolved</b>.</p>
     <div class="shots">
-      <figure><a href="screenshots/ticket-101-1-work.jpg" target="_blank"><img src="screenshots/ticket-101-1-work.jpg" alt="Ticket 101 work run on the React board"></a>
-        <figcaption><b>1 · The work run</b> (20:07). The chain Boss → Accounting → Inventory → Customer Service, the bills-due alert, Boss's call at the time (waiting on approval), and each agent's summary with request #1 and draft #1.</figcaption></figure>
-      <figure><a href="screenshots/ticket-101-2-resolved.jpg" target="_blank"><img src="screenshots/ticket-101-2-resolved.jpg" alt="Ticket 101 resolved on the React board"></a>
-        <figcaption><b>2 · Resolved</b> (20:17, after Cedric approved $840). Boss confirmed invoice 501 was paid; Inventory gave the earliest arrival; Customer Service saved corrected draft #4. Status: <b>Resolved</b>. Balance $160.00 shown is after both payments.</figcaption></figure>
+      <figure><a href="screenshots/ticket-101-1-work.jpg" target="_blank"><img src="screenshots/ticket-101-1-work.jpg" alt="Ticket 101 waiting on approval"></a>
+        <figcaption><b>1 · Run 2</b> (10:10–10:11, 62,984 tokens). Boss → Inventory → Accounting. Boss's call: wait for human approval of purchase order #3 ($8).</figcaption></figure>
+      <figure><a href="screenshots/ticket-101-2-resolved.jpg" target="_blank"><img src="screenshots/ticket-101-2-resolved.jpg" alt="Ticket 101 resolved"></a>
+        <figcaption><b>2 · Close-out</b> (10:12, 35,601 tokens). Boss → Inventory only. Purchase order and invoice paid, draft saved: <b>Resolved</b>.</figcaption></figure>
     </div>
   </section>
 
@@ -86,47 +106,27 @@
     </div>
     <div class="facts">
       <div><span>Boss called first</span>Facilities</div>
-      <div><span>Chain</span><span class="chain">Boss → Facilities → Accounting → Facilities</span></div>
-      <div><span>Human approval</span>Request #2, rent, $2,400.00 · Cedric</div>
-      <div><span>Cash</span>$2,560.00 → $160.00</div>
+      <div><span>Chain</span><span class="chain">Boss → Facilities</span></div>
+      <div><span>Human approval</span>None in this run. Rent was paid as request #1, filed during 103.</div>
+      <div><span>Cash</span>$152.00 → $152.00 (no change)</div>
     </div>
-    <p>Facilities checked the notice against the lease ($2,400 due 2026-09-02), Accounting filed the rent, Facilities drafted the landlord reply, and Cedric approved the payment. The lease moved to next due 2026-10-02. The close-out was Boss alone, with no handoffs and 24,390 tokens.</p>
+    <p>Rent was already paid, so Facilities checked lease 1 (next due 2026-10-02) and saved the landlord reply (draft #4). Boss resolved it in one pass with one handoff (37,321 tokens). Accounting, Inventory and Customer Service weren't needed.</p>
     <div class="shots">
-      <figure><a href="screenshots/ticket-102-1-work.jpg" target="_blank"><img src="screenshots/ticket-102-1-work.jpg" alt="Ticket 102 work run on the React board"></a>
-        <figcaption><b>1 · The work run</b> (20:08). Facilities and Accounting did the work; Inventory and Customer Service stayed idle (not needed). Boss's next step for the person: approve request #2 before 2026-09-02.</figcaption></figure>
-      <figure><a href="screenshots/ticket-102-2-resolved.jpg" target="_blank"><img src="screenshots/ticket-102-2-resolved.jpg" alt="Ticket 102 resolved on the React board"></a>
-        <figcaption><b>2 · Resolved</b> (20:17). Boss re-checked with <code>get_ticket</code>, <code>get_lease</code>, <code>get_cash_balance</code>, <code>get_bills_due</code> and set <b>Resolved</b>: rent paid, landlord draft saved, nothing sent.</figcaption></figure>
+      <figure><a href="screenshots/ticket-102-resolved.jpg" target="_blank"><img src="screenshots/ticket-102-resolved.jpg" alt="Ticket 102 resolved"></a>
+        <figcaption><b>The run</b> (10:11–10:12). Boss → Facilities only. Boss's call: no payment request needed. Draft #4 stays on the board, and nothing was sent.</figcaption></figure>
     </div>
-  </section>
-
-  <section class="ticket" id="t103">
-    <div class="head">
-      <div><h2>#103 · Bulk hoodie discount</h2><div class="who">Price override · Yale AI Club · 20 × CC-HOOD-NAVY size M</div></div>
-      <span class="badge open">In progress</span>
-    </div>
-    <div class="facts">
-      <div><span>Boss called first</span>Inventory</div>
-      <div><span>Chain</span><span class="chain">Boss → Inventory → Accounting → Customer Service</span></div>
-      <div><span>Human approval</span>None needed. No payment was requested.</div>
-      <div><span>Cash</span>$160.00 → $160.00 (no change)</div>
-    </div>
-    <p>Boss set <b>$50/hoodie</b> (13.8% off $58, $28 margin over the $22 cost), but only 8 of 20 are in stock. The 12-hoodie purchase order ($264) was <b>refused by the cash guardrail</b>, since only $160 was left. Customer Service's draft #3 offers what's possible. Boss deferred the full-quantity offer, so the ticket stays <b>in progress</b>. That's the final state you chose to leave it in.</p>
-    <div class="shots">
-      <figure><a href="screenshots/ticket-103-in-progress.jpg" target="_blank"><img src="screenshots/ticket-103-in-progress.jpg" alt="Ticket 103 on the React board, still in progress"></a>
-        <figcaption><b>Last run</b> (20:18). Inventory, Accounting and Customer Service re-checked the facts; Boss kept the ticket <b>In progress</b> because the other 12 can't be bought with $160.</figcaption></figure>
-    </div>
-    <div class="note">This page is named "Resolved Board", but #103 is not resolved. It's shown so the board is complete and honest.</div>
   </section>
 
   <section class="ticket" id="cash">
     <div class="head"><div><h2>Cash</h2><div class="who">checking · data/campus_customs_new.db</div></div><span class="badge resolved">Matches cash_accounts</span></div>
     <table>
-      <tr><th>Step</th><th>Ticket</th><th>Why</th><th>Approved by</th><th class="num">Change</th><th class="num">Balance</th></tr>
-      <tr><td>Start (reset)</td><td>—</td><td>Original database</td><td>—</td><td class="num">—</td><td class="num">$3,400.00</td></tr>
-      <tr><td>Payment #1</td><td>101</td><td>Invoice 501 to Bulldog Print Co (overdue, blocked the tee reprint)</td><td>Cedric</td><td class="num">−$840.00</td><td class="num">$2,560.00</td></tr>
-      <tr><td>Payment #2</td><td>102</td><td>September rent, lease 1</td><td>Cedric</td><td class="num">−$2,400.00</td><td class="num">$160.00</td></tr>
-      <tr><td>—</td><td>103</td><td>Purchase order for 12 hoodies ($264) refused: more than cash on hand</td><td>—</td><td class="num">$0.00</td><td class="num">$160.00</td></tr>
-      <tr class="end"><td colspan="4">End: $3,400.00 − $840.00 − $2,400.00</td><td class="num">−$3,240.00</td><td class="num">$160.00</td></tr>
+      <tr><th>Step</th><th>Filed under</th><th>Paid for</th><th>Why</th><th>Approved by</th><th class="num">Change</th><th class="num">Balance</th></tr>
+      <tr><td>Start (reset)</td><td>—</td><td>—</td><td>Original database</td><td>—</td><td class="num">—</td><td class="num">$3,400.00</td></tr>
+      <tr><td>Payment #1 (10:07:58)</td><td>103</td><td>102</td><td>September rent, lease 1, due 2026-09-02</td><td>Cedric</td><td class="num">−$2,400.00</td><td class="num">$1,000.00</td></tr>
+      <tr><td>Payment #2 (10:07:59)</td><td>103</td><td>101</td><td>Invoice 501 to Bulldog Print Co (overdue; the tee reprint)</td><td>Cedric</td><td class="num">−$840.00</td><td class="num">$160.00</td></tr>
+      <tr><td>Payment #3 (10:12:14)</td><td>101</td><td>101</td><td>Purchase order: 1 CC-TEE-WHITE size S</td><td>Cedric</td><td class="num">−$8.00</td><td class="num">$152.00</td></tr>
+      <tr><td>—</td><td>103</td><td>103</td><td>No purchase order: 8 M + 12 L filled from stock</td><td>—</td><td class="num">$0.00</td><td class="num">$152.00</td></tr>
+      <tr class="end"><td colspan="5">End: $3,400.00 − $2,400.00 − $840.00 − $8.00</td><td class="num">−$3,248.00</td><td class="num">$152.00</td></tr>
     </table>
   </section>
 </main>
